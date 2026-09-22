@@ -486,24 +486,24 @@ export class DatabaseService {
 
       // Create admin user
       const adminUser = await this.createUser({
-        email: 'admin@example.com',
+        email: 'habtamukifilu@gmail.com',
         password: 'password',
-        name: 'Admin User',
+        name: 'Habtamu Kifilu',
         role: 'ADMIN',
       });
 
       // Create affiliate users
       const affiliate1User = await this.createUser({
-        email: 'sarah.johnson@example.com',
+        email: 'yordanostilahunolana@gmail.com',
         password: 'password',
-        name: 'Sarah Johnson',
+        name: 'Yordanos Tilahun',
         role: 'AFFILIATE',
       });
 
       const affiliate2User = await this.createUser({
-        email: 'david.lee@example.com',
+        email: 'wadahabtamuk@gmail.com',
         password: 'password',
-        name: 'David Lee',
+        name: 'Wada Habtamu',
         role: 'AFFILIATE',
       });
 

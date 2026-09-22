@@ -19,6 +19,7 @@ model User {
   updatedAt      DateTime     @updatedAt @map("updated_at")
   profilePicture String?      @map("profile_picture")
   affiliate      Affiliate?
+  notifications   Notification[]
   auditLogs      AuditLog[]
   commissions    Commission[]
   payouts        Payout[]
@@ -688,4 +689,27 @@ enum TeamMemberStatus {
   PENDING
   ACTIVE
   DEACTIVATED
+}
+
+ // ───────────────────────────────────────────────
+ // Database-backed Notifications
+ // ───────────────────────────────────────────────
+
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  type      String
+  title     String
+  message   String
+  metadata  Json     @default("{}")
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([userId, read])
+  @@index([createdAt])
+  @@map("notifications")
 }

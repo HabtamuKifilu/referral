@@ -4,9 +4,9 @@ async function checkUsers() {
   console.log('🔍 Checking database users...');
   
   try {
-    const adminUser = await db.getUserByEmail('admin@example.com');
-    const affiliate1 = await db.getUserByEmail('sarah.johnson@example.com');
-    const affiliate2 = await db.getUserByEmail('david.lee@example.com');
+    const adminUser = await db.getUserByEmail('habtamukifilu@gmail.com');
+    const affiliate1 = await db.getUserByEmail('yordanostilahunolana@gmail.com');
+    const affiliate2 = await db.getUserByEmail('wadahabtamuk@gmail.com');
     
     console.log('\n👤 Users in database:');
     console.log('Admin User:', adminUser ? `✅ ${adminUser.email} (${adminUser.role}, ${adminUser.status})` : '❌ Not found');
@@ -19,12 +19,12 @@ async function checkUsers() {
       console.log('✅ Database seeded!');
       
       // Check again
-      const newAdmin = await db.getUserByEmail('admin@example.com');
+      const newAdmin = await db.getUserByEmail('habtamukifilu@gmail.com');
       console.log('New Admin User:', newAdmin ? `✅ ${newAdmin.email}` : '❌ Still not found');
     }
     
     console.log('\n🔑 Login credentials:');
-    console.log('Email: admin@example.com');
+    console.log('Email: habtamukifilu@gmail.com');
     console.log('Password: password');
     console.log('URL: http://localhost:3000');
     

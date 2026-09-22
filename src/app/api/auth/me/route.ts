@@ -1,13 +1,35 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { jwtVerify } from 'jose';
 import { prisma } from '@/lib/prisma';
+
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET!
+);
 
 export async function GET(request: NextRequest) {
   try {
-    const userId = request.headers.get('x-user-id')!;
+    const token = request.cookies.get('auth-token')?.value;
 
-    // Get user from database to ensure they still exist and get latest data
+    if (!token) {
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
+    }
 
-    // Get user from database to ensure they still exist and get latest data
+    // Verify the JWT from the authentication cookie
+    const { payload } = await jwtVerify(token, JWT_SECRET);
+
+    const userId = payload.userId as string;
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: 'Invalid authentication token' },
+        { status: 401 }
+      );
+    }
+
+    // Confirm the user still exists and retrieve the latest user data
     const user = await prisma.user.findUnique({
       where: { id: userId },
       include: {
@@ -35,6 +57,7 @@ export async function GET(request: NextRequest) {
 
   } catch (error) {
     console.error('Auth check error:', error);
+
     return NextResponse.json(
       { error: 'Invalid or expired token' },
       { status: 401 }

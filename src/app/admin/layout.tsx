@@ -3,6 +3,7 @@
 import React from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/useAuth';
+
 import {
   SidebarProvider,
   Sidebar,
@@ -49,6 +50,7 @@ import {
   UsersRound,
   Layers,
 } from 'lucide-react';
+import NotificationCenter from '@/components/notifications/NotificationCenter';
 
 const mainNavItems = [
   { title: 'Dashboard', url: '/admin', icon: LayoutDashboard },
@@ -74,10 +76,9 @@ const configNavItems = [
   { title: 'API Analytics', url: '/admin/api-analytics', icon: Activity },
 ];
 
-function AdminSidebar() {
+function AdminSidebar({ user, logout }: { user: { id: string; email: string; name: string; role: string; hasAffiliate: boolean; profilePicture?: string } | null; logout: () => Promise<void> }) {
   const pathname = usePathname();
   const router = useRouter();
-  const { user, logout } = useAuth();
 
   const isActive = (url: string) => {
     if (url === '/admin') return pathname === '/admin';
@@ -218,7 +219,7 @@ function AdminSidebar() {
 }
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
 
   if (loading) {
     return (
@@ -253,7 +254,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <SidebarProvider>
-      <AdminSidebar />
+      <AdminSidebar user={user} logout={logout} />
       <SidebarInset>
         <header className="flex h-14 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
@@ -265,12 +266,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" className="relative">
-                <Bell className="h-4 w-4" />
-                <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] text-destructive-foreground">
-                  3
-                </span>
-              </Button>
+              <NotificationCenter />
             </div>
           </div>
         </header>
